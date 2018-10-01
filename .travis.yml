@@ -1,0 +1,34 @@
+language: go
+
+addons:
+  apt:
+    packages:
+    # needed for the nfpm pipe:
+    - rpm
+    # needed for the snap pipe:
+    - snapcraft
+
+env:
+# needed for the snap pipe:
+- PATH=/snap/bin:$PATH
+
+install:
+# needed for the snap pipe:
+- sudo snap install snapcraft --classic
+
+# needed for the docker pipe
+services:
+- docker
+
+after_success:
+# docker login is required if you want to push docker images.
+- test -n "$TRAVIS_TAG" && echo $DOCKER_PASSWORD | docker login -u=meyskens --password-stdin
+
+# calls goreleaser
+deploy:
+- provider: script
+  skip_cleanup: true
+  script: curl -sL https://git.io/goreleaser | bash
+  on:
+    tags: true
+    condition: $TRAVIS_OS_NAME = linux
