@@ -5,8 +5,6 @@ addons:
     packages:
     # needed for the nfpm pipe:
     - rpm
-    # needed for the snap pipe:
-    - snapcraft
 
 env:
 # needed for the snap pipe:
