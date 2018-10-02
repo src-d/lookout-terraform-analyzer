@@ -13,10 +13,8 @@ import (
 	"gopkg.in/src-d/lookout-sdk.v0/pb"
 )
 
+// this regex checks if this is a terrafrom hcl file name
 var terraformFileRegex = regexp.MustCompile(`\.tf$`)
-
-//Example Analyser gRPC service implementation.
-//Posts file-level comments for every file with language detected.
 
 type analyzer struct{}
 
@@ -67,11 +65,13 @@ func (*analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent) 
 
 		hadFiles[change.Head.Path] = true
 
+		// run the file through the HCL formatter
 		formatted, err := printer.Format(change.Head.Content)
 		if err != nil {
 			continue
 		}
 
+		// check if changes have been made
 		if !bytes.Equal(change.Head.Content, formatted) {
 			comments = append(comments, &pb.Comment{
 				File: change.Head.Path,
