@@ -68,6 +68,7 @@ func (*analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent) 
 		// run the file through the HCL formatter
 		formatted, err := printer.Format(change.Head.Content)
 		if err != nil {
+			log.Infof("HCL errored on fomatting '%s' with error: %s", change.Head.Path, err)
 			continue
 		}
 
