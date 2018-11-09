@@ -1,28 +1,38 @@
 language: go
 
-addons:
-  apt:
-    packages:
-    # needed for the nfpm pipe:
-    - rpm
+go:
+  - '1.10.x'
 
-env:
-# needed for the snap pipe:
-- PATH=/snap/bin:$PATH
+stages:
+  - name: test
+  - name: release
+    if: tag IS present
+  - name: deploy
+    if: tag IS present
 
-# needed for the docker pipe
-services:
-- docker
+go_import_path: github.com/src-d/lookout-terraform-analyzer
 
-after_success:
-# docker login is required if you want to push docker images.
-- test -n "$TRAVIS_TAG" && echo $DOCKER_PASSWORD | docker login -u=meyskens --password-stdin
-
-# calls goreleaser
-deploy:
-- provider: script
-  skip_cleanup: true
-  script: curl -sL https://git.io/goreleaser | bash
-  on:
-    tags: true
-    condition: $TRAVIS_OS_NAME = linux
+jobs:
+  include:
+    - name: 'Unit tests'
+      stage: test
+      script: make test
+    - name: 'Check deps'
+      install:
+        - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+      script:
+        - dep ensure -v
+        - make no-changes-in-commit
+        - make build
+        - make no-changes-in-commit
+    - name: 'Push image to Docker Hub'
+      stage: release
+      script:
+        - PKG_OS=linux make packages
+        - DOCKER_PUSH_LATEST=true make docker-push
+    - name: 'Deploy to staging'
+      stage: deploy
+      install:
+        - make install-helm
+      script:
+        - HELM_RELEASE=lookout-terraform-analyzer HELM_CHART=lookout-terraform-analyzer K8S_NAMESPACE=lookout HELM_ARGS="--tiller-namespace=lookout --repo https://src-d.github.io/charts/ --set image.tag=$TRAVIS_TAG -f .helm_staging.yml" make deploy
