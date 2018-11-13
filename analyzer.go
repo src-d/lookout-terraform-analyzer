@@ -1,34 +1,30 @@
-package main
+package terraformanalyzer
 
 import (
 	"bytes"
 	"context"
 	"fmt"
-	"io"
 	"regexp"
 
+	"github.com/src-d/lookout"
+
 	"github.com/hashicorp/hcl/hcl/printer"
-	"google.golang.org/grpc"
 	"gopkg.in/src-d/go-log.v1"
 	"gopkg.in/src-d/lookout-sdk.v0/pb"
 )
 
-// this regex checks if this is a terrafrom hcl file name
+// this regex checks if this is a terraform hcl file name
 var terraformFileRegex = regexp.MustCompile(`\.tf$`)
 
-type analyzer struct{}
+type Analyzer struct {
+	DataClient *lookout.DataClient
+	Version    string
+}
 
-func (*analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent) (*pb.EventResponse, error) {
+func (a Analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent) (*pb.EventResponse, error) {
 	log.Infof("got review request %v", review)
 
-	conn, err := grpc.Dial(dataSrvAddr, grpc.WithInsecure())
-	if err != nil {
-		log.Errorf(err, "failed to connect to DataServer at %s", dataSrvAddr)
-	}
-	defer conn.Close()
-
-	dataClient := pb.NewDataClient(conn)
-	changes, err := dataClient.GetChanges(ctx, &pb.ChangesRequest{
+	changes, err := a.DataClient.GetChanges(ctx, &pb.ChangesRequest{
 		Head:            &review.Head,
 		Base:            &review.Base,
 		WantContents:    true,
@@ -37,19 +33,13 @@ func (*analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent) 
 	})
 	if err != nil {
 		log.Errorf(
-			err, "GetChanges from DataServer %s failed", dataSrvAddr)
+			err, "GetChanges from DataServer failed")
 	}
 
 	var comments []*pb.Comment
 	hadFiles := map[string]bool{}
-	for {
-		change, err := changes.Recv()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			log.Errorf(err, "GetChanges from DataServer %s failed", dataSrvAddr)
-		}
+	for changes.Next() {
+		change := changes.Change()
 
 		log.Infof("analyzing '%s'", change.Head.Path)
 
@@ -82,9 +72,9 @@ func (*analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent) 
 		}
 	}
 
-	return &pb.EventResponse{AnalyzerVersion: version, Comments: comments}, nil
+	return &pb.EventResponse{AnalyzerVersion: a.Version, Comments: comments}, nil
 }
 
-func (*analyzer) NotifyPushEvent(context.Context, *pb.PushEvent) (*pb.EventResponse, error) {
+func (a Analyzer) NotifyPushEvent(context.Context, *pb.PushEvent) (*pb.EventResponse, error) {
 	return &pb.EventResponse{}, nil
 }
