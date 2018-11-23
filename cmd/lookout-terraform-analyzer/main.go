@@ -22,11 +22,15 @@ type config struct {
 	Host           string `envconfig:"HOST" default:"0.0.0.0"`
 	Port           int    `envconfig:"PORT" default:"2001"`
 	DataServiceURL string `envconfig:"DATA_SERVICE_URL" default:"ipv4://localhost:10301"`
+	LogLevel       string `envconfig:"LOG_LEVEL" default:"info"`
 }
 
 func main() {
 	var conf config
 	envconfig.MustProcess("LOOKOUT_TERRAFORM", &conf)
+
+	log.DefaultFactory = &log.LoggerFactory{Level: conf.LogLevel}
+	log.DefaultLogger = log.New(nil)
 
 	grpcAddr, err := grpchelper.ToGoGrpcAddress(conf.DataServiceURL)
 	if err != nil {
