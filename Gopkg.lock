@@ -30,28 +30,6 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:e7fbf52d47e724a32e4a589e9630d14d4681072bdfe1a31038ad6aad5cd967d7"
-  name = "github.com/grpc-ecosystem/go-grpc-middleware"
-  packages = [
-    ".",
-    "logging",
-  ]
-  pruneopts = "UT"
-  revision = "c250d6563d4d4c20252cd865923440e829844f4e"
-  version = "v1.0.0"
-
-[[projects]]
-  digest = "1:8ec8d88c248041a6df5f6574b87bc00e7e0b493881dad2e7ef47b11dc69093b5"
-  name = "github.com/hashicorp/golang-lru"
-  packages = [
-    ".",
-    "simplelru",
-  ]
-  pruneopts = "UT"
-  revision = "20f1fb78b0740ba8c3cb143a61e86ba5c8669768"
-  version = "v0.5.0"
-
-[[projects]]
   digest = "1:3ac56c81863a0a590c0e131806fa1ecded6f2332ecc96d0b443abcc6ae707544"
   name = "github.com/hashicorp/hcl"
   packages = [
@@ -65,14 +43,6 @@
   pruneopts = "UT"
   revision = "8cb6e5b959231cc1119e43259c4a608f9c51a241"
   version = "v1.0.0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:62fe3a7ea2050ecbd753a71889026f83d73329337ada66325cbafd5dea5f713d"
-  name = "github.com/jbenet/go-context"
-  packages = ["io"]
-  pruneopts = "UT"
-  revision = "d14ea06fba99483203c19d92cfcd13ebe73135f4"
 
 [[projects]]
   digest = "1:edbef42561faa44c19129b68d1e109fbc1647f63239250391eadc8d0e7c9f669"
@@ -123,14 +93,6 @@
   revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
-  branch = "master"
-  digest = "1:8553d30eda386cb686b29d3163800669f997f8804aa703703420950c347a3896"
-  name = "github.com/mwitkow/grpc-proxy"
-  packages = ["proxy"]
-  pruneopts = "UT"
-  revision = "0f1106ef9c766333b9acb4b81e705da4bade7215"
-
-[[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
@@ -153,17 +115,6 @@
   pruneopts = "UT"
   revision = "0280e33525f5d88edb71638a80b31724153225ba"
   version = "v1.0.0"
-
-[[projects]]
-  digest = "1:ccf97139c2409a37bf72808dca474ead5bd1c0d2e975695b1f9920f5991b98d6"
-  name = "github.com/src-d/lookout"
-  packages = [
-    ".",
-    "util/grpchelper",
-  ]
-  pruneopts = "UT"
-  revision = "1f6ce46c5d8cd0adcc4d4393447084a756222aa2"
-  version = "v0.5.0"
 
 [[projects]]
   digest = "1:39a425f98fb19427061a693fe6bf0683c9bddec4b25b17067e34fdb465e39cb9"
@@ -291,12 +242,9 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:200bd116579ee0584c53747cb700c993e8b5c30f884ab957460e6dc7fc0e3e78"
+  digest = "1:72fb70f3c8d95bf60cda1cce7e34d04bde2cb98e0a9f4c9fd1c8e135756f30eb"
   name = "gopkg.in/src-d/go-git.v4"
-  packages = [
-    "plumbing",
-    "utils/ioutil",
-  ]
+  packages = ["plumbing"]
   pruneopts = "UT"
   revision = "f62cd8e3495579a8323455fa0c4e6c44bb0d5e09"
   version = "v4.8.0"
@@ -323,8 +271,6 @@
   input-imports = [
     "github.com/hashicorp/hcl/hcl/printer",
     "github.com/kelseyhightower/envconfig",
-    "github.com/src-d/lookout",
-    "github.com/src-d/lookout/util/grpchelper",
     "google.golang.org/grpc",
     "gopkg.in/src-d/go-log.v1",
     "gopkg.in/src-d/lookout-sdk.v0/pb",
