@@ -4,20 +4,20 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"regexp"
 
-	"github.com/src-d/lookout"
+	"gopkg.in/src-d/lookout-sdk.v0/pb"
 
 	"github.com/hashicorp/hcl/hcl/printer"
 	"gopkg.in/src-d/go-log.v1"
-	"gopkg.in/src-d/lookout-sdk.v0/pb"
 )
 
 // this regex checks if this is a terraform hcl file name
 var terraformFileRegex = regexp.MustCompile(`\.tf$`)
 
 type Analyzer struct {
-	DataClient *lookout.DataClient
+	DataClient pb.DataClient
 	Version    string
 }
 
@@ -28,28 +28,40 @@ func (a Analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent)
 		Head:            &review.Head,
 		Base:            &review.Base,
 		WantContents:    true,
+		WantLanguage:    false,
 		WantUAST:        false,
 		ExcludeVendored: true,
+		IncludePattern:  `\.tf$`,
 	})
+
 	if err != nil {
-		log.Errorf(
-			err, "GetChanges from DataServer failed")
+		log.Errorf(err, "GetChanges from DataServer failed")
+		return nil, err
 	}
 
 	var comments []*pb.Comment
 	hadFiles := map[string]bool{}
-	for changes.Next() {
-		change := changes.Change()
+
+	for {
+		change, err := changes.Recv()
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			log.Errorf(err, "GetChanges from DataServer failed")
+			return nil, err
+		}
 
 		log.Infof("analyzing '%s'", change.Head.Path)
 
-		if !terraformFileRegex.MatchString(change.Head.Path) {
-			log.Infof("'%s' is not an HCL file", change.Head.Path)
+		if change.Head == nil {
+			log.Infof("ignoring deleted '%s'", change.Base.Path)
 			continue
 		}
 
 		if _, hasAnalyzed := hadFiles[change.Head.Path]; hasAnalyzed {
-			log.Infof("Already analyzed '%s'", change.Head.Path)
+			log.Infof("ignoring already analyzed '%s'", change.Head.Path)
 			continue
 		}
 
