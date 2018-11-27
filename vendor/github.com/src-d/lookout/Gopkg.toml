@@ -37,10 +37,6 @@
   version = "1.16.0"
 
 [[constraint]]
-  name = "gopkg.in/sourcegraph/go-vcsurl.v1"
-  version = "1.0.0"
-
-[[constraint]]
   name = "gopkg.in/src-d/go-errors.v1"
   version = "1.0.0"
 
@@ -75,7 +71,7 @@
 
 [[constraint]]
   name = "gopkg.in/src-d/lookout-sdk.v0"
-  version = "0.1.0"
+  version = "0.1.2"
 
 [[constraint]]
   name = "github.com/sanity-io/litter"
@@ -96,3 +92,7 @@
 [[constraint]]
   name = "github.com/hashicorp/golang-lru"
   version = "0.5.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/mwitkow/grpc-proxy"

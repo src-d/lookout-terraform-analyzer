@@ -212,6 +212,14 @@
   version = "0.4"
 
 [[projects]]
+  digest = "1:4059c14e87a2de3a434430340521b5feece186c1469eff0834c29a63870de3ed"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
+
+[[projects]]
   branch = "master"
   digest = "1:edc2689ab4f5b3ce111f504b42e76160a0192df86bbe8ce8c0abab749fccd538"
   name = "github.com/lann/builder"
@@ -277,6 +285,14 @@
   packages = ["."]
   pruneopts = "NUT"
   revision = "3864e76763d94a6df2f9960b16a20a33da9f9a66"
+
+[[projects]]
+  branch = "master"
+  digest = "1:e2962a2cae643693cc9704d8a464665f05c365d276d41005209b8af66c106dfe"
+  name = "github.com/mwitkow/grpc-proxy"
+  packages = ["proxy"]
+  pruneopts = "NUT"
+  revision = "0f1106ef9c766333b9acb4b81e705da4bade7215"
 
 [[projects]]
   digest = "1:592fd1b8b9c8189db56dd6f1fd73f89825c25b6b636032350d4b2b639964520b"
@@ -350,12 +366,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:6989062eb7ccf25cf38bf4fe3dba097ee209f896cda42cefdca3927047bef7b6"
+  digest = "1:ecf78eacf406c42f07f66d6b79fda24d2b92dc711bfd0760d0c931678f9621fe"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
+  revision = "ad15b42461921f1fb3529b058c6786c6a45d5162"
+  version = "v1.1.1"
 
 [[projects]]
   digest = "1:fcd6de2209e4598560eb0fdbe1c535553db7f5c2d0f24ee3ece77b7ae8334ce1"
@@ -380,11 +396,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:dcb5082ac724ad044a5f7e2aa7b594ad5458e4a575b04a1403f83ba7e2e4975c"
+  digest = "1:36d801c057aadb14b3e7e3a19640199072cb0a9bc194968d622016572777b6b0"
   name = "github.com/src-d/lookout-test-fixtures"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "a0d9d29bb3b4ea591c388037a2e27aa1ef9a2c1e"
+  revision = "6ed9bf1fcf2a2d0ef170646acc041c2926eff51c"
 
 [[projects]]
   branch = "master"
@@ -596,14 +612,6 @@
   revision = "20d25e2804050c1cd24a7eea1e7a6447dd0e74ec"
 
 [[projects]]
-  digest = "1:c43bd09de9553524d9409e0413b91d12ea74fbd4583c9850e6bb4dbbc9228090"
-  name = "gopkg.in/sourcegraph/go-vcsurl.v1"
-  packages = ["."]
-  pruneopts = "NUT"
-  revision = "6b12603ea6fd7f84b8c90118face09df39ea10c6"
-  version = "v1"
-
-[[projects]]
   digest = "1:d11329b27b0f34c399185531f3232493d7da40f576574da04776812b0a94f66b"
   name = "gopkg.in/src-d/enry.v1"
   packages = [
@@ -735,12 +743,12 @@
   version = "v1.0.5"
 
 [[projects]]
-  digest = "1:e532b733db09e0d561bd3d10a3c50198234aee2ff289211f3c1f6f44d9aeaf1f"
+  digest = "1:3b3519cdc5a47f977761844e20d65f3b6e043a815616fb269e59b600cb92d9d0"
   name = "gopkg.in/src-d/lookout-sdk.v0"
   packages = ["pb"]
   pruneopts = "NUT"
-  revision = "d1dc995edc5d1f7f3e7810cf21f466c6b1f82407"
-  version = "v0.1.0"
+  revision = "df92c36f6ab2e46fbbf541c4c1f470e2c20bd570"
+  version = "v0.1.2"
 
 [[projects]]
   digest = "1:20d5d24cfd1dac53cbf730d5c9861c0792c68ae547e67fc16fa0ed0660481b0a"
@@ -796,6 +804,7 @@
     "github.com/jessevdk/go-flags",
     "github.com/jinzhu/copier",
     "github.com/lib/pq",
+    "github.com/mwitkow/grpc-proxy/proxy",
     "github.com/sanity-io/litter",
     "github.com/satori/go.uuid",
     "github.com/src-d/lookout-test-fixtures",
@@ -804,10 +813,11 @@
     "github.com/stretchr/testify/require",
     "github.com/stretchr/testify/suite",
     "google.golang.org/grpc",
+    "google.golang.org/grpc/codes",
     "google.golang.org/grpc/connectivity",
+    "google.golang.org/grpc/metadata",
     "gopkg.in/bblfsh/sdk.v1/protocol",
     "gopkg.in/bblfsh/sdk.v1/uast",
-    "gopkg.in/sourcegraph/go-vcsurl.v1",
     "gopkg.in/src-d/enry.v1",
     "gopkg.in/src-d/go-billy.v4",
     "gopkg.in/src-d/go-billy.v4/memfs",

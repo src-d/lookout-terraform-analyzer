@@ -125,6 +125,7 @@ This is a list of the available analyzers for lookout:
 | [gometalint](https://github.com/src-d/lookout-gometalint-analyzer) | Reports [gometalinter](https://github.com/alecthomas/gometalinter) results on pull requests | testing and demo |
 | [sonarcheck](https://github.com/src-d/lookout-sonarcheck-analyzer) | An analyzer that uses [bblfsh UAST](https://doc.bblf.sh/uast/uast-specification.html) and [sonar-checks](https://github.com/bblfsh/sonar-checks) to process pull requests | testing and demo |
 | [terraform](https://github.com/meyskens/lookout-terraform-analyzer) | An analyzer that checks if [Terraform](https://github.com/hashicorp/terraform/) files are correctly formatted | usable |
+| [flake8](https://github.com/src-d/lookout-flake8-analyzer) | Reports [flake8](http://flake8.pycqa.org/en/latest/) results on pull requests (for Python) | testing and demo |
 
 
 # SDK for Analyzer Developers
@@ -188,7 +189,7 @@ $ make test-json
 
 ## Dummy Analyzer Release
 
-[Dummy analyzer](./cmd/dummy) is a simple analyzer implementation example. It is part of the lookout codebase but it's release cycle is managed independently from main one.
+[Dummy analyzer](./cmd/dummy) is a simple analyzer implementation example. It is part of the lookout codebase but its release cycle is managed independently from main one.
 
 To release a new version and publish the dummy analyzer container you need to create a tag with the `dummy` prefix, e.g. `dummy-v0.0.1`. Please note this doesn't require to do a GitHub release, we just need the Git tag.
 
