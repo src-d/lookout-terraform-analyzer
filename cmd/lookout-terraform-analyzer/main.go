@@ -1,13 +1,15 @@
 package main
 
 import (
-	"context"
 	"fmt"
+	"net"
+	"os"
+
+	terraformanalyzer "github.com/src-d/lookout-terraform-analyzer"
+
+	"gopkg.in/src-d/lookout-sdk.v0/pb"
 
 	"github.com/kelseyhightower/envconfig"
-	"github.com/src-d/lookout"
-	terraformanalyzer "github.com/src-d/lookout-terraform-analyzer"
-	"github.com/src-d/lookout/util/grpchelper"
 	"google.golang.org/grpc"
 	"gopkg.in/src-d/go-log.v1"
 )
@@ -18,10 +20,12 @@ var (
 	build   string
 )
 
+const maxMessageSize = 100 * 1024 * 1024 //100mb
+
 type config struct {
 	Host           string `envconfig:"HOST" default:"0.0.0.0"`
 	Port           int    `envconfig:"PORT" default:"2001"`
-	DataServiceURL string `envconfig:"DATA_SERVICE_URL" default:"ipv4://localhost:10301"`
+	DataServiceURL string `envconfig:"DATA_SERVICE_URL" default:"localhost:10301"`
 	LogLevel       string `envconfig:"LOG_LEVEL" default:"info"`
 }
 
@@ -32,41 +36,44 @@ func main() {
 	log.DefaultFactory = &log.LoggerFactory{Level: conf.LogLevel}
 	log.DefaultLogger = log.New(nil)
 
-	grpcAddr, err := grpchelper.ToGoGrpcAddress(conf.DataServiceURL)
-	if err != nil {
-		log.Errorf(err, "failed to parse DataService addres %s", conf.DataServiceURL)
-		return
-	}
+	grpcAddr := conf.DataServiceURL
 
-	conn, err := grpchelper.DialContext(
-		context.Background(),
+	conn, err := grpc.Dial(
 		grpcAddr,
 		grpc.WithInsecure(),
 		grpc.WithDefaultCallOptions(grpc.FailFast(false)),
 	)
 	if err != nil {
 		log.Errorf(err, "cannot create connection to DataService %s", grpcAddr)
-		return
+		os.Exit(1)
 	}
 
-	analyzer := terraformanalyzer.Analyzer{
-		DataClient: lookout.NewDataClient(conn),
+	defer conn.Close()
+
+	analyzer := &terraformanalyzer.Analyzer{
+		DataClient: pb.NewDataClient(conn),
 		Version:    version,
 	}
 
-	server := grpchelper.NewServer()
-	lookout.RegisterAnalyzerServer(server, analyzer)
+	opts := []grpc.ServerOption{
+		grpc.MaxRecvMsgSize(maxMessageSize),
+		grpc.MaxSendMsgSize(maxMessageSize),
+	}
 
-	analyzerURL := fmt.Sprintf("ipv4://%s:%d", conf.Host, conf.Port)
-	lis, err := grpchelper.Listen(analyzerURL)
+	server := grpc.NewServer(opts...)
+	pb.RegisterAnalyzerServer(server, analyzer)
+
+	analyzerURL := fmt.Sprintf("%s:%d", conf.Host, conf.Port)
+	lis, err := net.Listen("tcp", analyzerURL)
 	if err != nil {
 		log.Errorf(err, "failed to start analyzer gRPC server on %s", analyzerURL)
-		return
+		os.Exit(1)
 	}
 
 	log.Infof("server has started on '%s'", analyzerURL)
 	err = server.Serve(lis)
 	if err != nil {
 		log.Errorf(err, "gRPC server failed listening on %v", lis)
+		os.Exit(1)
 	}
 }
