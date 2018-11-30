@@ -275,14 +275,6 @@
   version = "v1.16.1"
 
 [[projects]]
-  digest = "1:6432785f8a6e930ab914151f8a89a7f3156b0981342e39b2ebc471f0f2b54cdd"
-  name = "gopkg.in/sourcegraph/go-vcsurl.v1"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "6b12603ea6fd7f84b8c90118face09df39ea10c6"
-  version = "v1"
-
-[[projects]]
   digest = "1:48c5414d07b77e35a4c19f35e1c78d6a0cbdba6386005d0f8b7b86862d0ceca3"
   name = "gopkg.in/src-d/go-errors.v1"
   packages = ["."]
@@ -310,12 +302,12 @@
   version = "v1.0.1"
 
 [[projects]]
-  digest = "1:e532b733db09e0d561bd3d10a3c50198234aee2ff289211f3c1f6f44d9aeaf1f"
+  digest = "1:3b3519cdc5a47f977761844e20d65f3b6e043a815616fb269e59b600cb92d9d0"
   name = "gopkg.in/src-d/lookout-sdk.v0"
   packages = ["pb"]
   pruneopts = "UT"
-  revision = "d1dc995edc5d1f7f3e7810cf21f466c6b1f82407"
-  version = "v0.1.0"
+  revision = "df92c36f6ab2e46fbbf541c4c1f470e2c20bd570"
+  version = "v0.1.2"
 
 [solve-meta]
   analyzer-name = "dep"
