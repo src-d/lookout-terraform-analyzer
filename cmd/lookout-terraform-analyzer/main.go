@@ -25,7 +25,7 @@ const maxMessageSize = 100 * 1024 * 1024 //100mb
 
 type config struct {
 	Host           string `envconfig:"HOST" default:"0.0.0.0"`
-	Port           int    `envconfig:"PORT" default:"2001"`
+	Port           int    `envconfig:"PORT" default:"9930"`
 	DataServiceURL string `envconfig:"DATA_SERVICE_URL" default:"ipv4://localhost:10301"`
 	LogLevel       string `envconfig:"LOG_LEVEL" default:"info"`
 }
