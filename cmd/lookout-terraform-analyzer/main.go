@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"os"
@@ -11,7 +12,7 @@ import (
 
 	"github.com/kelseyhightower/envconfig"
 	"google.golang.org/grpc"
-	"gopkg.in/src-d/go-log.v1"
+	log "gopkg.in/src-d/go-log.v1"
 )
 
 var (
@@ -24,8 +25,8 @@ const maxMessageSize = 100 * 1024 * 1024 //100mb
 
 type config struct {
 	Host           string `envconfig:"HOST" default:"0.0.0.0"`
-	Port           int    `envconfig:"PORT" default:"2001"`
-	DataServiceURL string `envconfig:"DATA_SERVICE_URL" default:"localhost:10301"`
+	Port           int    `envconfig:"PORT" default:"9930"`
+	DataServiceURL string `envconfig:"DATA_SERVICE_URL" default:"ipv4://localhost:10301"`
 	LogLevel       string `envconfig:"LOG_LEVEL" default:"info"`
 }
 
@@ -36,9 +37,14 @@ func main() {
 	log.DefaultFactory = &log.LoggerFactory{Level: conf.LogLevel}
 	log.DefaultLogger = log.New(nil)
 
-	grpcAddr := conf.DataServiceURL
+	grpcAddr, err := pb.ToGoGrpcAddress(conf.DataServiceURL)
+	if err != nil {
+		log.Errorf(err, "failed to parse DataService address %s", conf.DataServiceURL)
+		return
+	}
 
-	conn, err := grpc.Dial(
+	conn, err := pb.DialContext(
+		context.Background(),
 		grpcAddr,
 		grpc.WithInsecure(),
 		grpc.WithDefaultCallOptions(grpc.FailFast(false)),

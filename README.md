@@ -9,7 +9,7 @@ Install the analyzer, and run it:
 
 ```shell
 $ go install github.com/src-d/lookout-terraform-analyzer/cmd/lookout-terraform-analyzer
-$ PORT=2001 lookout-terraform-analyzer
+$ lookout-terraform-analyzer
 ```
 
 The analyzer will start listening for pull review requests from lookout.
@@ -28,7 +28,7 @@ $ wget -O - https://raw.githubusercontent.com/src-d/lookout-sdk/master/_tools/in
 And then run:
 
 ```shell
-$ ./lookout-sdk review ipv4://localhost:2001
+$ ./lookout-sdk review
 ```
 
-It will mock a Pull Request containing the changes made by `HEAD` over `HEAD~1`, and it will send it to `lookout-terraform-analyzer` that you ran in the [previous step](#usage) and is listening under the specified port (dafault is `2001`)
+It will mock a Pull Request containing the changes made by `HEAD` over `HEAD~1`, and it will send it to `lookout-terraform-analyzer` that you ran in the [previous step](#usage).
