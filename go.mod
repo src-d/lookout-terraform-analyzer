@@ -20,5 +20,5 @@ require (
 	gopkg.in/src-d/go-errors.v1 v1.0.0 // indirect
 	gopkg.in/src-d/go-git.v4 v4.8.0 // indirect
 	gopkg.in/src-d/go-log.v1 v1.0.1
-	gopkg.in/src-d/lookout-sdk.v0 v0.3.0 // indirect
+	gopkg.in/src-d/lookout-sdk.v0 v0.3.0
 )

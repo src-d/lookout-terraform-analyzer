@@ -2,6 +2,12 @@
 github.com/agext/levenshtein
 # github.com/apparentlymart/go-textseg v1.0.0
 github.com/apparentlymart/go-textseg/textseg
+# github.com/gogo/protobuf v1.1.1
+github.com/gogo/protobuf/gogoproto
+github.com/gogo/protobuf/proto
+github.com/gogo/protobuf/types
+github.com/gogo/protobuf/protoc-gen-gogo/descriptor
+github.com/gogo/protobuf/sortkeys
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes
@@ -25,10 +31,14 @@ github.com/konsorten/go-windows-terminal-sequences
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.4
 github.com/mattn/go-isatty
+# github.com/mcuadros/go-lookup v0.0.0-20171110082742-5650f26be767
+github.com/mcuadros/go-lookup
 # github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b
 github.com/mgutz/ansi
 # github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7
 github.com/mitchellh/go-wordwrap
+# github.com/pkg/errors v0.8.0
+github.com/pkg/errors
 # github.com/sirupsen/logrus v1.2.0
 github.com/sirupsen/logrus
 # github.com/src-d/envconfig v1.0.0
@@ -90,5 +100,13 @@ google.golang.org/grpc/stats
 google.golang.org/grpc/status
 google.golang.org/grpc/tap
 google.golang.org/grpc/balancer/base
+# gopkg.in/bblfsh/sdk.v1 v1.16.1
+gopkg.in/bblfsh/sdk.v1/uast
+# gopkg.in/src-d/go-errors.v1 v1.0.0
+gopkg.in/src-d/go-errors.v1
+# gopkg.in/src-d/go-git.v4 v4.8.0
+gopkg.in/src-d/go-git.v4/plumbing
 # gopkg.in/src-d/go-log.v1 v1.0.1
 gopkg.in/src-d/go-log.v1
+# gopkg.in/src-d/lookout-sdk.v0 v0.3.0
+gopkg.in/src-d/lookout-sdk.v0/pb
