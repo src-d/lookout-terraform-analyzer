@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - '1.10.x'
+  - '1.12.x'
 
 stages:
   - name: test
@@ -17,14 +17,6 @@ jobs:
     - name: 'Unit tests'
       stage: test
       script: make test
-    - name: 'Check deps'
-      install:
-        - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-      script:
-        - dep ensure -v
-        - make no-changes-in-commit
-        - make build
-        - make no-changes-in-commit
     - name: 'Push image to Docker Hub'
       stage: release
       script:
