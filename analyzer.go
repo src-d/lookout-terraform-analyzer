@@ -9,7 +9,9 @@ import (
 
 	"gopkg.in/src-d/lookout-sdk.v0/pb"
 
-	"github.com/hashicorp/hcl/hcl/printer"
+	"github.com/hashicorp/hcl2/hcl"
+	"github.com/hashicorp/hcl2/hcl/hclsyntax"
+	"github.com/hashicorp/hcl2/hclwrite"
 	"gopkg.in/src-d/go-log.v1"
 )
 
@@ -67,17 +69,18 @@ func (a Analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent)
 
 		hadFiles[change.Head.Path] = true
 
-		// run the file through the HCL formatter
-		formatted, err := printer.Format(change.Head.Content)
-		if err != nil {
+		// run the file through the HCL syntax parser
+		_, syntaxDiags := hclsyntax.ParseConfig(change.Head.Content, change.Head.Path, hcl.Pos{Line: 1, Column: 1})
+		if syntaxDiags.HasErrors() {
 			comments = append(comments, &pb.Comment{
 				File: change.Head.Path,
 				Line: 0,
-				Text: fmt.Sprintf("HCL errored on fomatting:\n%s", err),
+				Text: fmt.Sprintf("HCL errored on fomatting:\n%s", syntaxDiags),
 			})
 			continue
 		}
 
+		formatted := hclwrite.Format(change.Head.Content)
 		// check if changes have been made
 		if !bytes.Equal(change.Head.Content, formatted) {
 			comments = append(comments, &pb.Comment{
