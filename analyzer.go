@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"strings"
 
 	"gopkg.in/src-d/lookout-sdk.v0/pb"
 
@@ -83,11 +84,27 @@ func (a Analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent)
 		formatted := hclwrite.Format(change.Head.Content)
 		// check if changes have been made
 		if !bytes.Equal(change.Head.Content, formatted) {
-			comments = append(comments, &pb.Comment{
-				File: change.Head.Path,
-				Line: 0,
-				Text: fmt.Sprintf("This file is not Terraform fmt'ed"),
-			})
+			oldLines := strings.Split(string(change.Head.Content), "\n")
+			newLines := strings.Split(string(formatted), "\n")
+			if len(oldLines) != len(newLines) {
+				// multi line changes are not fully supported by GitHub yet, falling back to a comment
+				comments = append(comments, &pb.Comment{
+					File: change.Head.Path,
+					Line: 0,
+					Text: fmt.Sprintf("This file is not Terraform fmt'ed"),
+				})
+				continue
+			}
+
+			for i := range oldLines {
+				if oldLines[i] != newLines[i] {
+					comments = append(comments, &pb.Comment{
+						File: change.Head.Path,
+						Line: int32(i + 1),
+						Text: fmt.Sprintf("```suggestion\n%s\n```", newLines[i]),
+					})
+				}
+			}
 		}
 	}
 
