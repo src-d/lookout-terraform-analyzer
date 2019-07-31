@@ -105,7 +105,6 @@ func (a Analyzer) NotifyReviewEvent(ctx context.Context, review *pb.ReviewEvent)
 					})
 				}
 			}
-
 		}
 	}
 
