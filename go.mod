@@ -4,8 +4,7 @@ go 1.12
 
 require (
 	github.com/gogo/protobuf v1.1.1 // indirect
-	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hashicorp/hcl2 v0.0.0-20190607155442-318e80eefe28
+	github.com/hashicorp/hcl2 v0.0.0-20190725010614-0c3fe388e450
 	github.com/kelseyhightower/envconfig v1.3.0
 	github.com/mattn/go-colorable v0.0.9 // indirect
 	github.com/mattn/go-isatty v0.0.4 // indirect
